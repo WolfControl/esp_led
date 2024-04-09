@@ -14,12 +14,16 @@ extern "C" {
 // Structures to hold LED channel information
 typedef struct {
     ledc_channel_t red_channel;
+    int red_pin;
     ledc_channel_t green_channel;
+    int green_pin;
     ledc_channel_t blue_channel;
+    int blue_pin;
 } rgb_led_t;
 
 typedef struct {
     ledc_channel_t channel;
+    int pin;
 } led_t;
 
 /**
@@ -34,28 +38,20 @@ esp_err_t setupLEDC(void);
  * 
  * @param led Pointer to the RGB LED struct to set up
  * 
- * @param redPin GPIO pin number to attach the red channel to
- * 
- * @param greenPin GPIO pin number to attach the green channel to
- * 
- * @param bluePin GPIO pin number to attach the blue channel to
- * 
  * @return esp_err_t: ESP_OK on success, error code otherwise
  * 
  * @note todo - use gpio pin enum instead of int
 */
-esp_err_t setupRGBLED(rgb_led_t *led, int redPin, int greenPin, int bluePin);
+esp_err_t setupRGBLED(rgb_led_t *led);
 
 /**
  * @brief Setup an LED
  * 
  * @param led Pointer to the LED struct to set up
  * 
- * @param pin GPIO pin number to attach the LED to
- * 
  * @return esp_err_t: ESP_OK on success, error code otherwise
 */
-esp_err_t setupLED(led_t *led, int pin);
+esp_err_t setupLED(led_t *led);
 
 /**
  * @brief Setup an LEDC channel

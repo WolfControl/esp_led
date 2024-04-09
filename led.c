@@ -21,29 +21,26 @@ esp_err_t setupLEDC(void)
     return status;
 }
 
-esp_err_t setupRGBLED(rgb_led_t *led, int redPin, int greenPin, int bluePin)
-{
+esp_err_t setupRGBLED(rgb_led_t *led) {
     const char *TAG = "setupRGBLED";
     esp_err_t status = ESP_OK;
 
-    ESP_LOGI(TAG, "Setting up RGB LED on pins R: %d, G: %d, B: %d", redPin, greenPin, bluePin);
-    status = setupChannel(&led->red_channel, redPin);
-    if (status != ESP_OK)
-    {
+    ESP_LOGI(TAG, "Setting up RGB LED on pins R: %d, G: %d, B: %d", led->red_pin, led->green_pin, led->blue_pin);
+
+    status = setupChannel(&led->red_channel, led->red_pin);
+    if (status != ESP_OK) {
         ESP_LOGE(TAG, "Failed to set up red channel: %s", esp_err_to_name(status));
         return status;
     }
 
-    status = setupChannel(&led->green_channel, greenPin);
-    if (status != ESP_OK)
-    {
+    status = setupChannel(&led->green_channel, led->green_pin);
+    if (status != ESP_OK) {
         ESP_LOGE(TAG, "Failed to set up green channel: %s", esp_err_to_name(status));
         return status;
     }
 
-    status = setupChannel(&led->blue_channel, bluePin);
-    if (status != ESP_OK)
-    {
+    status = setupChannel(&led->blue_channel, led->blue_pin);
+    if (status != ESP_OK) {
         ESP_LOGE(TAG, "Failed to set up blue channel: %s", esp_err_to_name(status));
         return status;
     }
@@ -51,15 +48,13 @@ esp_err_t setupRGBLED(rgb_led_t *led, int redPin, int greenPin, int bluePin)
     return status;
 }
 
-esp_err_t setupLED(led_t *led, int pin)
-{
+esp_err_t setupLED(led_t *led) {
     const char *TAG = "setupLED";
     esp_err_t status = ESP_OK;
 
-    ESP_LOGI(TAG, "Setting up LED on pin %d", pin);
-    status = setupChannel(&led->channel, pin);
-    if (status != ESP_OK)
-    {
+    ESP_LOGI(TAG, "Setting up LED on pin %d", led->pin);
+    status = setupChannel(&led->channel, led->pin);
+    if (status != ESP_OK) {
         ESP_LOGE(TAG, "Failed to set up LED: %s", esp_err_to_name(status));
         return status;
     }
