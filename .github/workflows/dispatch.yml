@@ -17,3 +17,7 @@ jobs:
           token: ${{ secrets.JRHEMMEN_TOKEN }}
           repository: ${{ matrix.repo }}
           event-type: 'library-release'
+          client-payload: '{
+            "version": "${{ github.event.release.tag_name }}"
+            "library": "${{ github.event.repository.name }}"
+            }'
