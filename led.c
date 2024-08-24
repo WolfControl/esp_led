@@ -25,7 +25,7 @@ esp_err_t setupRGBLED(rgb_led_t *led) {
     const char *TAG = "setupRGBLED";
     esp_err_t status = ESP_OK;
 
-    ESP_LOGI(TAG, "Setting up RGB LED on pins R: %d, G: %d, B: %d", led->red_pin, led->green_pin, led->blue_pin);
+    ESP_LOGD(TAG, "Setting up RGB LED on pins R: %d, G: %d, B: %d", led->red_pin, led->green_pin, led->blue_pin);
 
     status = setupChannel(&led->red_channel, led->red_pin);
     if (status != ESP_OK) {
@@ -52,7 +52,7 @@ esp_err_t setupLED(led_t *led) {
     const char *TAG = "setupLED";
     esp_err_t status = ESP_OK;
 
-    ESP_LOGI(TAG, "Setting up LED on pin %d", led->pin);
+    ESP_LOGD(TAG, "Setting up LED on pin %d", led->pin);
     status = setupChannel(&led->channel, led->pin);
     if (status != ESP_OK) {
         ESP_LOGE(TAG, "Failed to set up LED: %s", esp_err_to_name(status));
@@ -98,7 +98,7 @@ esp_err_t setRGBLED(rgb_led_t *led, uint32_t color, uint8_t brightness)
     uint32_t greenDuty = ((color >> 8) & 0xFF) * brightnessFactor * dutyMax / 255;
     uint32_t blueDuty = (color & 0xFF) * brightnessFactor * dutyMax / 255;
 
-    ESP_LOGD(TAG, "Setting RGB LED duty to R: %d, G: %d, B: %d", redDuty, greenDuty, blueDuty);
+    ESP_LOGD(TAG, "Setting RGB LED duty to R: %lu, G: %lu, B: %lu", redDuty, greenDuty, blueDuty);
     status = ledc_set_duty(LEDC_LOW_SPEED_MODE, led->red_channel, redDuty);
     if (status != ESP_OK)
     {
@@ -118,7 +118,6 @@ esp_err_t setRGBLED(rgb_led_t *led, uint32_t color, uint8_t brightness)
         return status;
     }
 
-    ESP_LOGD(TAG, "Updating RGB LED duty");
     status = ledc_update_duty(LEDC_LOW_SPEED_MODE, led->red_channel);
     if (status != ESP_OK)
     {
@@ -138,7 +137,6 @@ esp_err_t setRGBLED(rgb_led_t *led, uint32_t color, uint8_t brightness)
         return status;
     }
 
-    ESP_LOGI(TAG, "RGB LED Color: %06X, Brightness: %d", color, brightness);
     return status;
 }
 
@@ -148,7 +146,6 @@ esp_err_t setLED(led_t *led, uint8_t brightness)
     esp_err_t status = ESP_OK;
     uint32_t duty = (uint32_t)(brightness / 255.0f * ((1 << LEDC_TIMER_13_BIT) - 1));
 
-    ESP_LOGD(TAG, "Setting LED duty to %d", duty);
     status = ledc_set_duty(LEDC_LOW_SPEED_MODE, led->channel, duty);
     if (status != ESP_OK)
     {
@@ -156,7 +153,6 @@ esp_err_t setLED(led_t *led, uint8_t brightness)
         return status;
     }
 
-    ESP_LOGD(TAG, "Updating LED duty");
     status = ledc_update_duty(LEDC_LOW_SPEED_MODE, led->channel);
     if (status != ESP_OK)
     {
@@ -164,6 +160,5 @@ esp_err_t setLED(led_t *led, uint8_t brightness)
         return status;
     }
 
-    ESP_LOGI(TAG, "LED brightness: %d", brightness);
     return status;
 }
